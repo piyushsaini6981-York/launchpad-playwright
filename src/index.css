@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Design tokens — match Figma “Corporation Directory / Add New Corporation / Quick setup – Step 2”
+ * (frame 1440×1134). Do not add ad-hoc hex colors in components; use these variables.
+ */
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Layout (from frame + reference screenshot) */
+  --frame-max-width: 1440px;
+  --frame-min-height: 1134px;
+  --sidebar-width: 260px;
+  --header-height: 64px;
+  --content-padding-x: 32px;
+  --content-padding-y: 24px;
+  --section-gap: 24px;
+  --field-gap: 16px;
+  --radius: 8px;
+
+  /* Core */
+  --background: 220 20% 97%;
+  --foreground: 222 47% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  /* Brand / primary (active step, Next, progress fill) */
+  --primary: 221 83% 45%;
+  --primary-foreground: 210 40% 98%;
+
+  /* Muted primary / step “Previous” style */
+  --secondary: 226 100% 97%;
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+
+  /* Teal accent (helper copy under “Company Info.”) */
+  --accent: 172 42% 38%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 221 83% 45%;
+
+  --brand: 221 83% 45%;
+  --brand-foreground: 210 40% 98%;
+
+  /* Interactive hover for ghost/icon buttons */
+  --interactive: 214 32% 91%;
+  --interactive-hover: 214 32% 85%;
+
+  /* Sidebar */
+  --sidebar: 220 26% 14%;
+  --sidebar-foreground: 213 31% 91%;
+  --sidebar-accent: 215 28% 17%;
+  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-border: 217 33% 22%;
+
+  /* Sidebar active row (blue pill) */
+  --sidebar-active: 221 83% 53%;
+  --sidebar-active-foreground: 210 40% 98%;
+  /* Highlight row behind “Corporation Directory” */
+  --sidebar-nav-active-bg: 217 91% 25%;
+}
+
+.dark {
+  --background: 222 47% 6%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 8%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 8%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 172 42% 45%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 22%;
+  --input: 217 33% 22%;
+  --ring: 217 91% 60%;
+  --sidebar: 222 47% 8%;
+  --sidebar-foreground: 210 40% 98%;
+  --sidebar-accent: 217 33% 17%;
+  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-border: 217 33% 22%;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+
+  .corporation-directory-root {
+    font-family: var(--font-sans);
+    color: hsl(var(--foreground));
+    background-color: hsl(var(--background));
+  }
+}
