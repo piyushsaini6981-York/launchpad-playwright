@@ -8,8 +8,15 @@ const Login: React.FC = () => {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from =
-    (location.state as { from?: string } | undefined)?.from || "/";
+
+  /** Where to send the user after login (set by ProtectedRoute when redirecting guests). */
+  const redirectAfterLogin = (): string => {
+    const raw = (location.state as { from?: string } | undefined)?.from ?? "/";
+    if (typeof raw !== "string") return "/";
+    if (!raw.startsWith("/") || raw.startsWith("//")) return "/";
+    if (raw === "/login") return "/";
+    return raw;
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +34,7 @@ const Login: React.FC = () => {
     try {
       const ok = login(email, password);
       if (ok) {
-        navigate(from === "/login" ? "/" : from, { replace: true });
+        navigate(redirectAfterLogin(), { replace: true });
       } else {
         setError("Invalid email or password.");
       }
