@@ -1,7 +1,16 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Navbar: React.FC = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top">
       <div className="container">
@@ -52,6 +61,21 @@ const Navbar: React.FC = () => {
               >
                 + Add Student
               </NavLink>
+            </li>
+            <li className="nav-item d-flex align-items-center ms-lg-2 ps-lg-2 border-start border-white border-opacity-25">
+              {user && (
+                <span className="text-white-50 small d-none d-md-inline me-2 text-truncate" style={{ maxWidth: 160 }} title={user.email}>
+                  {user.email}
+                </span>
+              )}
+              <button
+                type="button"
+                className="btn btn-outline-light btn-sm"
+                onClick={handleLogout}
+                data-testid="navbar-logout"
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>

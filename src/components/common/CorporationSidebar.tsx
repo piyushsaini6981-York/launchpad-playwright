@@ -1,5 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 import {
   LayoutDashboard,
   Building2,
@@ -72,6 +74,14 @@ const itemClass = (isActive: boolean) =>
   );
 
 const CorporationSidebar: React.FC = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
   return (
     <aside
       className="tw-sticky tw-top-0 tw-flex tw-h-screen tw-w-sidebar tw-shrink-0 tw-flex-col tw-border-r tw-border-border tw-bg-sidebar tw-text-sidebar-foreground"
@@ -132,6 +142,28 @@ const CorporationSidebar: React.FC = () => {
           </div>
         ))}
       </nav>
+      <div className="tw-mt-auto tw-border-t tw-border-border tw-p-4">
+        {user && (
+          <p
+            className="tw-mb-3 tw-truncate tw-px-1 tw-text-xs tw-text-muted-foreground"
+            title={user.email}
+          >
+            {user.email}
+          </p>
+        )}
+        <button
+          type="button"
+          className={cn(
+            "tw-flex tw-w-full tw-items-center tw-gap-2 tw-rounded-md tw-border tw-border-border tw-bg-background tw-px-3 tw-py-2 tw-text-sm tw-font-medium tw-text-foreground hover:tw-bg-muted/60",
+            "focus-visible:tw-outline-none focus-visible:tw-ring-2 focus-visible:tw-ring-ring"
+          )}
+          onClick={handleLogout}
+          data-testid="sidebar-logout"
+        >
+          <LogOut className="tw-size-4 tw-shrink-0" aria-hidden />
+          Logout
+        </button>
+      </div>
     </aside>
   );
 };
