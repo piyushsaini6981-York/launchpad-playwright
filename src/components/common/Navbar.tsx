@@ -53,6 +53,16 @@ const Navbar: React.FC = () => {
                 + Add Student
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                className={({ isActive }) =>
+                  `nav-link px-3 rounded ${isActive ? "active bg-white bg-opacity-25 fw-semibold" : ""}`
+                }
+                to="/corporation/company-details"
+              >
+                Edit Company (design)
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>
