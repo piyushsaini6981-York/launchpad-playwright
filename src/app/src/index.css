@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+
+/* Scoped reset for Tailwind-powered Espra shells only */
+
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    /* Surfaces — align with modal + dashboard screenshot */
+    --background: #f6f8fb;
+    --foreground: #0d1b35;
+
+    --card: #ffffff;
+    --card-foreground: var(--foreground);
+
+    --muted: #e8eef5;
+    --muted-foreground: #5f6f85;
+
+    /* Brand / interactive */
+    --primary: #253b80;
+    --primary-foreground: #ffffff;
+
+    --secondary: #ffffff;
+    --secondary-foreground: #0d1b35;
+
+    --destructive: #c93030;
+    --destructive-foreground: #ffffff;
+
+    /* Outline / borders */
+    --border: #d7dee8;
+    --input: var(--border);
+    --ring: #253b80;
+
+    /* Accent (Security posture pill in reference) */
+    --accent: #e8efff;
+    --accent-foreground: #2761d9;
+
+    /* Layout tokens — use only via Tailwind arbitrary or theme.spacing */
+    --spacing-form-row: 1rem;
+    --spacing-section: 1.5rem;
+
+    --modal-max-width: 40rem;
+
+    --radius: 10px;
+
+    --shadow-modal: 0px 24px 48px rgba(15, 30, 60, 0.12),
+      0px 8px 16px rgba(15, 30, 60, 0.06);
+
+    /* Overlay behind dialog */
+    --overlay: rgb(17 34 61 / 0.45);
+
+    --sidebar-expanded: 260px;
+    --sidebar-rail: 72px;
+    --shell-header-height: 64px;
+
+    /* Espra chrome (dashboard behind modal — reference PNG) */
+    --sidebar-bg: #050f24;
+    --sidebar-border: rgb(255 255 255 / 0.06);
+    --sidebar-item: rgb(229 239 253 / 0.72);
+    --sidebar-item-muted: rgb(229 239 253 / 0.45);
+    --sidebar-group: rgb(165 182 207 / 0.55);
+    --shell-header-bg: #ffffff;
+    --shell-header-divider: #e5eaf2;
+    --breadcrumb-muted: rgb(113 133 157);
+  }
+}
+
+@layer components {
+  .espra-shell-root {
+    font-family: var(--font-sans);
+    color: var(--foreground);
+    background: var(--background);
+  }
+
+  /* Native selects match Figma selects */
+  .espra-select-trigger {
+    @apply flex h-[44px] w-full items-center justify-between rounded-md border border-input bg-secondary px-[14px] text-sm font-medium text-foreground shadow-sm outline-none transition-[color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-60;
+    padding-inline: calc(var(--spacing-section) - 6px);
+  }
+
+  .espra-field-grid {
+    @apply grid gap-x-4 gap-y-form-row md:grid-cols-2;
+  }
+
+  .espra-required::before {
+    content: "*";
+    @apply mr-1 text-destructive;
+  }
+}
