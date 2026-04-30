@@ -1,8 +1,10 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { BadgeCheck } from "lucide-react";
 import { EspraAppShell } from "../components/common/EspraAppShell";
 import { EditCompanyDialog } from "../components/company/EditCompanyDialog";
 import { Button } from "../components/ui/button";
+import { useAuth } from "../context/AuthContext";
 
 /**
  * Implements the Espra corporation “Company Details / Edit Company” frame
@@ -10,6 +12,13 @@ import { Button } from "../components/ui/button";
  */
 const CompanyDetailsPage: React.FC = () => {
   const [editOpen, setEditOpen] = React.useState(true);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <EspraAppShell>
@@ -26,6 +35,14 @@ const CompanyDetailsPage: React.FC = () => {
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-3">
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-10 text-muted-foreground hover:text-foreground"
+                onClick={handleLogout}
+              >
+                Log out
+              </Button>
               <Button
                 type="button"
                 variant="outline"

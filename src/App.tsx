@@ -8,7 +8,10 @@ import {
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import Navbar from "./components/common/Navbar";
+import LoginPage from "./pages/LoginPage";
 import Dashboard from "./pages/Dashboard";
 import CompanyDetailsPage from "./pages/CompanyDetailsPage";
 import StudentList from "./components/students/StudentList";
@@ -31,17 +34,22 @@ const StudentChrome: React.FC = () => (
 const App: React.FC = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/company/details" element={<CompanyDetailsPage />} />
-        <Route element={<StudentChrome />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/students" element={<StudentList />} />
-          <Route path="/students/new" element={<StudentForm />} />
-          <Route path="/students/:id" element={<StudentDetail />} />
-          <Route path="/students/:id/edit" element={<StudentForm />} />
-        </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/company/details" element={<CompanyDetailsPage />} />
+            <Route element={<StudentChrome />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/students" element={<StudentList />} />
+              <Route path="/students/new" element={<StudentForm />} />
+              <Route path="/students/:id" element={<StudentDetail />} />
+              <Route path="/students/:id/edit" element={<StudentForm />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 };
