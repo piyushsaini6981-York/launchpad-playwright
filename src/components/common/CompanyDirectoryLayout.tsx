@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import moonUrl from "../../assets/moon.svg";
 import bellUrl from "../../assets/bell.svg";
@@ -47,6 +47,9 @@ export const CompanyDirectoryLayout: React.FC<CompanyDirectoryLayoutProps> = ({
   breadcrumbCurrent,
   children,
 }) => {
+  const location = useLocation();
+  const companyDirectoryActive = location.pathname.startsWith("/company-directory");
+
   return (
     <div className="box-border flex min-h-screen w-full bg-background text-foreground">
       <aside
@@ -63,23 +66,44 @@ export const CompanyDirectoryLayout: React.FC<CompanyDirectoryLayoutProps> = ({
                 {group.heading}
               </p>
               <div className="flex flex-col gap-xs">
-                {group.items.map((item) =>
-                  item.to ? (
-                    <NavLink
-                      key={item.label}
-                      to={item.to}
-                      className={({ isActive }) =>
-                        cn(
+                {group.items.map((item) => {
+                  if (item.label === "Company Directory" && item.to) {
+                    return (
+                      <NavLink
+                        key={item.label}
+                        to={item.to}
+                        className={cn(
                           "block rounded-md px-md py-sm text-body-sm transition-colors",
-                          isActive
+                          companyDirectoryActive
                             ? "bg-sidebar-accent font-medium text-sidebar-foreground"
                             : "text-sidebar-muted-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-foreground"
-                        )
-                      }
-                    >
-                      {item.label}
-                    </NavLink>
-                  ) : (
+                        )}
+                      >
+                        {item.label}
+                      </NavLink>
+                    );
+                  }
+
+                  if (item.to) {
+                    return (
+                      <NavLink
+                        key={item.label}
+                        to={item.to}
+                        className={({ isActive }) =>
+                          cn(
+                            "block rounded-md px-md py-sm text-body-sm transition-colors",
+                            isActive
+                              ? "bg-sidebar-accent font-medium text-sidebar-foreground"
+                              : "text-sidebar-muted-foreground hover:bg-sidebar-accent/80 hover:text-sidebar-foreground"
+                          )
+                        }
+                      >
+                        {item.label}
+                      </NavLink>
+                    );
+                  }
+
+                  return (
                     <button
                       key={item.label}
                       type="button"
@@ -87,8 +111,8 @@ export const CompanyDirectoryLayout: React.FC<CompanyDirectoryLayoutProps> = ({
                     >
                       {item.label}
                     </button>
-                  )
-                )}
+                  );
+                })}
               </div>
             </div>
           ))}

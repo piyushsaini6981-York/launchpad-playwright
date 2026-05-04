@@ -13,7 +13,10 @@ import Dashboard from "./pages/Dashboard";
 import StudentList from "./components/students/StudentList";
 import StudentDetail from "./components/students/StudentDetail";
 import StudentForm from "./components/students/StudentForm";
+import CompanyDirectoryBasicInfoPage from "./pages/CompanyDirectoryBasicInfoPage";
 import CompanyDirectoryKeyContactsPage from "./pages/CompanyDirectoryKeyContactsPage";
+import CompanyDirectoryPlanSeatsPage from "./pages/CompanyDirectoryPlanSeatsPage";
+import CompanyDirectoryConfigurationPage from "./pages/CompanyDirectoryConfigurationPage";
 
 const MainShell: React.FC = () => (
   <div className="min-vh-100 bg-light">
@@ -32,7 +35,11 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/company-directory" element={<Navigate to="/company-directory/key-contacts" replace />} />
+        <Route path="/company-directory/basic-info" element={<CompanyDirectoryBasicInfoPage />} />
         <Route path="/company-directory/key-contacts" element={<CompanyDirectoryKeyContactsPage />} />
+        <Route path="/company-directory/plan-seats" element={<CompanyDirectoryPlanSeatsPage />} />
+        <Route path="/company-directory/configuration" element={<CompanyDirectoryConfigurationPage />} />
         <Route element={<MainShell />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/students" element={<StudentList />} />
