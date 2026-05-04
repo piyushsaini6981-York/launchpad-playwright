@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Layout — aligned to 1440px artboard */
+    --sidebar-width: 260px;
+    --layout-content-max-width: 70rem;
+    --header-bar-height: 4.5rem;
+
+    /* Spacing scale (use via Tailwind spacing utilities mapped in tailwind.config) */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 2.5rem;
+    --spacing-3xl: 3rem;
+
+    /* Component sizing (Key Contacts — roster dropzone) */
+    --key-contacts-upload-min-height: 8.75rem;
+
+    /* Radius */
+    --radius: 0.5rem;
+    --radius-lg: 0.625rem;
+    --radius-xl: 0.75rem;
+
+    /* Typography */
+    --font-size-heading-xl: 1.5rem;
+    --line-height-heading-xl: 2rem;
+    --font-size-heading-lg: 1.125rem;
+    --line-height-heading-lg: 1.5rem;
+    --font-size-body-md: 0.875rem;
+    --line-height-body-md: 1.25rem;
+    --font-size-body-sm: 0.8125rem;
+    --line-height-body-sm: 1.125rem;
+
+    /* Core surfaces */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --muted: 210 16% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 221 83% 53%;
+
+    /* Interactive — primary blue (tabs, CTA, upload accent) */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 16% 93%;
+    --secondary-foreground: 222 47% 11%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Brand / semantic */
+    --brand: 221 83% 53%;
+    --brand-foreground: 0 0% 100%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 11%;
+
+    --info: 199 89% 96%;
+    --info-foreground: 200 98% 39%;
+
+    /* Sidebar */
+    --sidebar: 222 47% 11%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-muted-foreground: 215 16% 65%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-border: 217 33% 22%;
+
+    --shadow-card: 0 1px 2px 0 rgb(15 23 42 / 0.04);
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 20% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 20% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 16% 65%;
+
+    --border: 217 33% 22%;
+    --input: 217 33% 22%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 20% 98%;
+
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 20% 98%;
+
+    --sidebar: 222 47% 7%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-border: 217 33% 22%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  }
+}
