@@ -1,171 +1,191 @@
 import React from "react";
 import { CompanyDirectoryLayout } from "../components/common/CompanyDirectoryLayout";
-import { CompanyDirectoryEditFrame } from "../components/common/CompanyDirectoryEditFrame";
 import { Button } from "../components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "../components/ui/card";
-import { Alert, AlertTitle, AlertDescription } from "../components/ui/alert";
+import { Card } from "../components/ui/card";
 import { Label } from "../components/ui/label";
 import { Select } from "../components/ui/select";
+import { Input } from "../components/ui/input";
+import { cn } from "../lib/utils";
 
-import { ReactComponent as UploadCloudIcon } from "../assets/upload-cloud.svg";
-import { ReactComponent as InfoCircleIcon } from "../assets/info-circle.svg";
-import { ReactComponent as FileTextIcon } from "../assets/file-text.svg";
-
-const ROSTER_CONTACT_OPTIONS = [
-  "Ethan Carter",
-  "Sophia Martinez",
-  "James Anderson",
-  "Lara Croft",
-  "David Smith",
+const setupSteps = [
+  { number: 1, title: "Basic Info.", description: "Create top-level organization", complete: true },
+  { number: 2, title: "Company Info.", description: "Set up first operating unit", complete: false },
+  { number: 3, title: "Confirmation", description: "Review & confirm", complete: false },
 ] as const;
 
 const CompanyDirectoryKeyContactsPage: React.FC = () => {
-  const fileInputRef = React.useRef<HTMLInputElement>(null);
-
   return (
-    <CompanyDirectoryLayout breadcrumbCurrent="New York HQ">
+    <CompanyDirectoryLayout breadcrumbCurrent="Add New Corporation">
       <div className="mx-auto box-border flex w-full max-w-content flex-col gap-lg">
-        <CompanyDirectoryEditFrame />
+        <div className="space-y-xs">
+          <h1 className="text-heading-xl font-semibold text-foreground">Add New Corporation</h1>
+          <p className="text-body-md text-muted-foreground">
+            Set up a new corporation with its plan, region, and initial admin access.
+          </p>
+        </div>
 
-        <Card className="overflow-hidden">
-          <CardHeader className="gap-sm pb-lg">
-            <CardTitle className="text-heading-xl font-semibold">Key Contacts</CardTitle>
-            <CardDescription className="text-body-md">
-              Setup the operating unit for the company.
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="flex flex-col gap-lg pb-lg">
-            <Alert className="items-start border-primary/20 bg-info">
-              <InfoCircleIcon className="h-5 w-5 shrink-0 text-primary" aria-hidden />
-              <div className="flex flex-col gap-sm pt-xs">
-                <AlertTitle>Roster Note</AlertTitle>
-                <AlertDescription className="text-body-md">
-                  Upload the rosters via CSV or XLS files &amp; later on select them for specific roles.
-                </AlertDescription>
-              </div>
-            </Alert>
-
-            <Card className="shadow-none">
-              <CardHeader className="pb-md pt-lg">
-                <CardTitle>Rosters</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-lg pb-lg">
-                <div className="flex flex-col gap-sm">
-                  <Label htmlFor="roster-file" requiredIndicator>
-                    Upload Roster
-                  </Label>
-                  <input
-                    ref={fileInputRef}
-                    id="roster-file"
-                    type="file"
-                    accept=".csv,.xls,.xlsx"
-                    className="sr-only"
-                  />
-                  <button
-                    type="button"
-                    className="flex min-h-key-contacts-upload cursor-pointer flex-col items-center justify-center gap-md rounded-xl border-2 border-dashed border-input bg-card px-xl py-xl text-center shadow-card transition-colors hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    onClick={() => fileInputRef.current?.click()}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        fileInputRef.current?.click();
-                      }
-                    }}
-                    aria-label="Upload roster file"
-                  >
-                    <UploadCloudIcon className="h-10 w-10 shrink-0 text-primary" aria-hidden />
-                    <div className="flex flex-col gap-xs">
-                      <span className="text-body-md font-medium text-primary">
-                        Click to upload or drag-&amp;-drop file
-                      </span>
-                      <span className="text-body-sm text-muted-foreground">
-                        Supported file formats are CSV &amp; XLS up to 20MB
-                      </span>
-                    </div>
-                  </button>
+        <div className="grid grid-cols-12 gap-md">
+          <Card className="col-span-12 h-fit p-lg lg:col-span-4">
+            <div className="space-y-lg">
+              {setupSteps.map((step, index) => (
+                <div key={step.number} className="flex gap-md">
+                  <div className="flex flex-col items-center">
+                    <span
+                      className={cn(
+                        "inline-flex h-7 w-7 items-center justify-center rounded-full border text-body-sm font-medium",
+                        step.complete
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : step.number === 2
+                            ? "border-primary text-primary"
+                            : "border-border text-muted-foreground"
+                      )}
+                    >
+                      {step.complete ? "✓" : step.number}
+                    </span>
+                    {index < setupSteps.length - 1 ? (
+                      <span className="mt-sm h-10 w-px bg-border" aria-hidden />
+                    ) : null}
+                  </div>
+                  <div className="pt-xs">
+                    <p
+                      className={cn(
+                        "text-body-md font-semibold",
+                        step.number === 2 ? "text-primary" : "text-info-foreground"
+                      )}
+                    >
+                      {step.title}
+                    </p>
+                    <p className="text-body-md text-muted-foreground">{step.description}</p>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </Card>
 
-                <div className="flex items-center gap-md rounded-lg border border-border bg-accent px-md py-sm">
-                  <FileTextIcon className="h-[18px] w-[18px] shrink-0 text-muted-foreground" aria-hidden />
-                  <span className="truncate text-body-md font-medium text-foreground">rosters_final_file.csv</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="grid grid-cols-1 gap-x-lg gap-y-lg md:grid-cols-2">
-              <div className="flex flex-col gap-sm">
-                <Label htmlFor="primary-admin" requiredIndicator>
-                  Primary Company Admin
-                </Label>
-                <Select id="primary-admin" defaultValue="Ethan Carter">
-                  {ROSTER_CONTACT_OPTIONS.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <div className="flex flex-col gap-sm">
-                <Label htmlFor="secondary-admin" requiredIndicator>
-                  Secondary Company Admin
-                </Label>
-                <Select id="secondary-admin" defaultValue="Sophia Martinez">
-                  {ROSTER_CONTACT_OPTIONS.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <div className="flex flex-col gap-sm">
-                <Label htmlFor="exec-sponsor" requiredIndicator>
-                  Executive Sponsor
-                </Label>
-                <Select id="exec-sponsor" defaultValue="James Anderson">
-                  {ROSTER_CONTACT_OPTIONS.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <div className="flex flex-col gap-sm">
-                <Label htmlFor="hr-contact" requiredIndicator>
-                  HR/ People Ops Contact
-                </Label>
-                <Select id="hr-contact" defaultValue="Lara Croft">
-                  {ROSTER_CONTACT_OPTIONS.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-              <div className="flex flex-col gap-sm md:col-span-1">
-                <Label htmlFor="it-contact" requiredIndicator>
-                  IT/ Security Contact
-                </Label>
-                <Select id="it-contact" defaultValue="David Smith">
-                  {ROSTER_CONTACT_OPTIONS.map((name) => (
-                    <option key={name} value={name}>
-                      {name}
-                    </option>
-                  ))}
-                </Select>
+          <Card className="col-span-12 overflow-hidden lg:col-span-8">
+            <div className="border-b border-border px-lg py-md">
+              <p className="text-body-sm text-muted-foreground">33% Complete</p>
+              <div className="mt-sm h-1 rounded-full bg-muted">
+                <div className="h-1 w-1/3 rounded-full bg-primary" />
               </div>
             </div>
-          </CardContent>
 
-          <CardFooter className="gap-md">
-            <Button variant="outline" type="button" className="min-w-28 px-xl">
-              Cancel
-            </Button>
-            <Button type="button" className="min-w-36 px-xl">
-              Save &amp; Update
-            </Button>
-          </CardFooter>
-        </Card>
+            <div className="space-y-lg p-lg">
+              <div className="space-y-xs">
+                <h2 className="text-heading-xl font-semibold text-foreground">Company Info.</h2>
+                <p className="text-body-md text-info-foreground">
+                  Each corporation must have at least one company before continuing.
+                </p>
+              </div>
+
+              <section className="overflow-hidden rounded-xl border border-border">
+                <div className="border-b border-border px-lg py-sm text-heading-lg font-medium text-info-foreground">
+                  Company Details
+                </div>
+                <div className="grid grid-cols-2 gap-md p-lg">
+                  <div className="col-span-2 space-y-sm">
+                    <Label htmlFor="company-legal-name" requiredIndicator>
+                      Company Legal Name
+                    </Label>
+                    <Input id="company-legal-name" placeholder="e.g., Acme India Pvt Ltd" />
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="company-type" requiredIndicator>
+                      Company Type
+                    </Label>
+                    <Select id="company-type" defaultValue="Operating Company">
+                      <option>Operating Company</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="office-type" requiredIndicator>
+                      Office Type
+                    </Label>
+                    <Select id="office-type" defaultValue="Regional">
+                      <option>Regional</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="region">Region (Data Residency)</Label>
+                    <Select id="region" defaultValue="North America">
+                      <option>North America</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="industry">Industry</Label>
+                    <Select id="industry" defaultValue="Technology/ SaaS">
+                      <option>Technology/ SaaS</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="state-province" requiredIndicator>
+                      State/ Province
+                    </Label>
+                    <Select id="state-province" defaultValue="CA">
+                      <option>CA</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="city" requiredIndicator>
+                      City
+                    </Label>
+                    <Select id="city" defaultValue="San Francisco">
+                      <option>San Francisco</option>
+                    </Select>
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="zip" requiredIndicator>
+                      ZIP/ Postal Code
+                    </Label>
+                    <Input id="zip" defaultValue="100202" />
+                  </div>
+                </div>
+              </section>
+
+              <section className="overflow-hidden rounded-xl border border-border">
+                <div className="border-b border-border px-lg py-sm text-heading-lg font-medium text-info-foreground">
+                  Access Setup
+                </div>
+                <div className="grid grid-cols-2 gap-md p-lg">
+                  <div className="space-y-sm">
+                    <Label htmlFor="admin-name" requiredIndicator>
+                      Admin Name
+                    </Label>
+                    <Input id="admin-name" placeholder="e.g., Martin Morgan" />
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="admin-email" requiredIndicator>
+                      Company Admin Email
+                    </Label>
+                    <Input id="admin-email" placeholder="e.g., admin@acmecare.com" />
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="employees" requiredIndicator>
+                      No. of Employees
+                    </Label>
+                    <Input id="employees" placeholder="e.g., 25, 50, etc." />
+                  </div>
+                  <div className="space-y-sm">
+                    <Label htmlFor="security-posture">Security Posture</Label>
+                    <Input id="security-posture" defaultValue="Standard" />
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="flex items-center justify-between border-t border-border bg-card px-lg py-md">
+              <Button variant="outline" className="h-10 px-lg">
+                Cancel
+              </Button>
+              <div className="flex items-center gap-sm">
+                <Button variant="outline" className="h-10 bg-muted px-lg">
+                  Previous
+                </Button>
+                <Button className="h-10 px-xl">Next</Button>
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
     </CompanyDirectoryLayout>
   );
