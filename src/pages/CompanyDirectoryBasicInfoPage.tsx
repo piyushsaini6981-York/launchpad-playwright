@@ -6,6 +6,7 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Select } from "../components/ui/select";
 import { cn } from "../lib/utils";
+import chevronDownUrl from "../assets/chevron-down.svg";
 
 const setupSteps = [
   {
@@ -25,7 +26,28 @@ const setupSteps = [
   },
 ] as const;
 
+const industryOptions = [
+  "Technology / SaaS",
+  "Healthcare & Life Sciences",
+  "Financial Services",
+  "Education",
+  "Manufacturing",
+  "Retail & E-commerce",
+  "Media & Entertainment",
+  "Logistics & Transportation",
+  "Energy & Utilities",
+  "Government & Public Sector",
+  "Professional Services",
+  "Non-Profit",
+  "Other",
+] as const;
+
 const CompanyDirectoryBasicInfoPage: React.FC = () => {
+  const [isIndustryOpen, setIsIndustryOpen] = React.useState(true);
+  const [selectedIndustry, setSelectedIndustry] = React.useState<(typeof industryOptions)[number]>(
+    industryOptions[0]
+  );
+
   return (
     <CompanyDirectoryLayout breadcrumbCurrent="Add New Corporation">
       <div className="mx-auto box-border flex w-full max-w-content flex-col gap-lg">
@@ -115,12 +137,49 @@ const CompanyDirectoryBasicInfoPage: React.FC = () => {
                     <Label htmlFor="industry" requiredIndicator>
                       Industry
                     </Label>
-                    <Select id="industry" defaultValue="">
-                      <option value="" disabled>
-                        Select industry
-                      </option>
-                      <option value="technology">Technology</option>
-                    </Select>
+                    <div className="relative">
+                      <button
+                        id="industry"
+                        type="button"
+                        className="flex h-10 w-full items-center justify-between rounded-lg border border-input bg-card px-md py-sm text-left text-body-md text-muted-foreground shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        onClick={() => setIsIndustryOpen((prev) => !prev)}
+                        aria-haspopup="listbox"
+                        aria-expanded={isIndustryOpen}
+                      >
+                        <span>{selectedIndustry || "Select industry"}</span>
+                        <img src={chevronDownUrl} alt="" className="h-4 w-4" aria-hidden />
+                      </button>
+
+                      {isIndustryOpen ? (
+                        <div className="absolute left-0 top-full z-20 mt-sm w-full overflow-hidden rounded-xl border border-border bg-card shadow-card">
+                          <ul
+                            role="listbox"
+                            aria-label="Industry options"
+                            className="overflow-y-auto p-sm"
+                          >
+                            {industryOptions.map((option) => (
+                              <li key={option}>
+                                <button
+                                  type="button"
+                                  className={cn(
+                                    "w-full rounded-lg px-md py-md text-left text-heading-xl font-normal text-foreground transition-colors",
+                                    selectedIndustry === option ? "bg-muted" : "hover:bg-accent"
+                                  )}
+                                  onClick={() => {
+                                    setSelectedIndustry(option);
+                                    setIsIndustryOpen(false);
+                                  }}
+                                  role="option"
+                                  aria-selected={selectedIndustry === option}
+                                >
+                                  {option}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                   <div className="space-y-sm">
                     <Label htmlFor="corporate-phone" requiredIndicator>
