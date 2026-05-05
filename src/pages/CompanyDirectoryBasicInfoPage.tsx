@@ -42,10 +42,23 @@ const industryOptions = [
   "Other",
 ] as const;
 
+const timezoneOptions = [
+  "EST (Eastern Time)",
+  "CST (Central Time)",
+  "MST (Mountain Time)",
+  "PST (Pacific Time)",
+  "AKST (Alaska Time)",
+  "HST (Hawaii Time)",
+] as const;
+
 const CompanyDirectoryBasicInfoPage: React.FC = () => {
-  const [isIndustryOpen, setIsIndustryOpen] = React.useState(true);
+  const [isIndustryOpen, setIsIndustryOpen] = React.useState(false);
   const [selectedIndustry, setSelectedIndustry] = React.useState<(typeof industryOptions)[number]>(
     industryOptions[0]
+  );
+  const [isTimezoneOpen, setIsTimezoneOpen] = React.useState(true);
+  const [selectedTimezone, setSelectedTimezone] = React.useState<(typeof timezoneOptions)[number]>(
+    timezoneOptions[0]
   );
 
   return (
@@ -242,9 +255,45 @@ const CompanyDirectoryBasicInfoPage: React.FC = () => {
                     <Label htmlFor="timezone" requiredIndicator>
                       Time Zone
                     </Label>
-                    <Select id="timezone" defaultValue="EST (Eastern Time)">
-                      <option value="EST (Eastern Time)">EST (Eastern Time)</option>
-                    </Select>
+                    <div className="relative">
+                      <button
+                        id="timezone"
+                        type="button"
+                        className="flex h-10 w-full items-center justify-between rounded-lg border border-input bg-card px-md py-sm text-left text-body-md text-muted-foreground shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        onClick={() => setIsTimezoneOpen((prev) => !prev)}
+                        aria-haspopup="listbox"
+                        aria-expanded={isTimezoneOpen}
+                      >
+                        <span>{selectedTimezone}</span>
+                        <img src={chevronDownUrl} alt="" className="h-4 w-4" aria-hidden />
+                      </button>
+
+                      {isTimezoneOpen ? (
+                        <div className="absolute left-0 top-full z-20 mt-sm w-full overflow-hidden rounded-xl border border-border bg-card shadow-card">
+                          <ul role="listbox" aria-label="Time zone options" className="overflow-y-auto p-sm">
+                            {timezoneOptions.map((option) => (
+                              <li key={option}>
+                                <button
+                                  type="button"
+                                  className={cn(
+                                    "w-full rounded-lg px-md py-md text-left text-heading-xl font-normal text-foreground transition-colors",
+                                    selectedTimezone === option ? "bg-muted" : "hover:bg-accent"
+                                  )}
+                                  onClick={() => {
+                                    setSelectedTimezone(option);
+                                    setIsTimezoneOpen(false);
+                                  }}
+                                  role="option"
+                                  aria-selected={selectedTimezone === option}
+                                >
+                                  {option}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
               </section>
