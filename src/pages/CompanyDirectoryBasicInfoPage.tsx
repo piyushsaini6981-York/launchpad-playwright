@@ -42,6 +42,20 @@ const industryOptions = [
   "Other",
 ] as const;
 
+const regionOptions = [
+  "North America",
+  "Europe",
+  "United Kingdom",
+  "Middle East",
+  "Africa",
+  "India",
+  "Asia-Pacific",
+  "Latin America",
+  "Japan",
+  "China",
+  "Australia & New Zealand",
+] as const;
+
 const timezoneOptions = [
   "EST (Eastern Time)",
   "CST (Central Time)",
@@ -52,6 +66,10 @@ const timezoneOptions = [
 ] as const;
 
 const CompanyDirectoryBasicInfoPage: React.FC = () => {
+  const [isRegionOpen, setIsRegionOpen] = React.useState(true);
+  const [selectedRegion, setSelectedRegion] = React.useState<(typeof regionOptions)[number]>(
+    regionOptions[0]
+  );
   const [isIndustryOpen, setIsIndustryOpen] = React.useState(false);
   const [selectedIndustry, setSelectedIndustry] = React.useState<(typeof industryOptions)[number]>(
     industryOptions[0]
@@ -139,12 +157,45 @@ const CompanyDirectoryBasicInfoPage: React.FC = () => {
                     <Label htmlFor="region" requiredIndicator>
                       Region (Data Residency)
                     </Label>
-                    <Select id="region" defaultValue="">
-                      <option value="" disabled>
-                        Select operating region
-                      </option>
-                      <option value="us-east">US East</option>
-                    </Select>
+                    <div className="relative">
+                      <button
+                        id="region"
+                        type="button"
+                        className="flex h-10 w-full items-center justify-between rounded-lg border border-input bg-card px-md py-sm text-left text-body-md text-muted-foreground shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        onClick={() => setIsRegionOpen((prev) => !prev)}
+                        aria-haspopup="listbox"
+                        aria-expanded={isRegionOpen}
+                      >
+                        <span>{selectedRegion || "Select operating region"}</span>
+                        <img src={chevronDownUrl} alt="" className="h-4 w-4" aria-hidden />
+                      </button>
+
+                      {isRegionOpen ? (
+                        <div className="absolute left-0 top-full z-20 mt-sm w-full overflow-hidden rounded-xl border border-border bg-card shadow-card">
+                          <ul role="listbox" aria-label="Region options" className="overflow-y-auto p-sm">
+                            {regionOptions.map((option) => (
+                              <li key={option}>
+                                <button
+                                  type="button"
+                                  className={cn(
+                                    "w-full rounded-lg px-md py-md text-left text-heading-xl font-normal text-foreground transition-colors",
+                                    selectedRegion === option ? "bg-muted" : "hover:bg-accent"
+                                  )}
+                                  onClick={() => {
+                                    setSelectedRegion(option);
+                                    setIsRegionOpen(false);
+                                  }}
+                                  role="option"
+                                  aria-selected={selectedRegion === option}
+                                >
+                                  {option}
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
                   <div className="space-y-sm">
                     <Label htmlFor="industry" requiredIndicator>
